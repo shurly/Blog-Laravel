@@ -20,12 +20,21 @@
             </div>
         @endif
 
+        @if(Session::has('success'))
+            <div class="alert alert-success hide-msg" style="float: left; width: 100%; margin: 10px 0px;">
+                {{ Session::get('success') }}
+            </div>
+        @endif
 
-        {{ Form::model($user, ['route' => ['usuarios.update', $user->id], 'class' => 'form form-search form-ds', 'files' => true, 'method' => 'put']) }}
+
+        {{ Form::model($user, ['route' => ['profile.update', $user->id], 'class' => 'form form-search form-ds', 'files' => true]) }}
 
 
         <div class="form-group">
             {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nome:']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::hidden('email', null) !!}
         </div>
         <div class="form-group">
             {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Senha:']) !!}

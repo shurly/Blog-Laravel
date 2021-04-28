@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
         User::create([
            'name' => 'Anonimo',
            'email' => 'anonimo@gmail.com',
-           'password' => bcrypt('shdkyd&3kd1'),
+           'password' => bcrypt('shdkyd&3kd1'), //147258
            'bibliography' => 'Usuário Anônimo',
         ]);
 

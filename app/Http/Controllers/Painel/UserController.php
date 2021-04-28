@@ -148,8 +148,16 @@ class UserController extends Controller
             //Pega a imagem
             $image = $request->file('image');
 
+            if($user->image == ''){
+                $nameImage = uniqid(date('YmdHis')) . '.' . $image->getClientOriginalExtension();
+                $dataUser['image'] = $nameImage;
+            }else{
+                $nameImage = $user->image;
+                $dataUser['image'] = $user->image;
+            }
+
             //define o nome da imagem
-            $upload = $image->storeAs('users', $user->image);
+            $upload = $image->storeAs('users', $nameImage);
 
             if (!$upload) {
                 return redirect()->route('usuarios.edit', ['id' => $id])
@@ -220,4 +228,60 @@ class UserController extends Controller
 
         return view('painel.users.profile', compact('user', 'title'));
     }
+
+    public function updateProfile(UserFormRequest $request, $id)
+    {
+
+        //Pegar todos os dados de usuários e armazenar na variavel $dataform
+        $dataUser = $request->all();
+
+        //Pegar objeto de usuário
+        $user = $this->user->find($id);
+
+
+        //Criptografa a senha
+        $dataUser['password'] = bcrypt($dataUser['password']);
+
+        //Não permitir que usuário altere e-mail
+        unset($dataUser['email']);
+
+
+        //Verifica se existe imagem
+        if ($request->hasFile('image')) {
+            //Pega a imagem
+            $image = $request->file('image');
+
+            if($user->image == ''){
+                $nameImage = uniqid(date('YmdHis')) . '.' . $image->getClientOriginalExtension();
+                $dataUser['image'] = $nameImage;
+            }else{
+                $nameImage = $user->image;
+                $dataUser['image'] = $nameImage;
+            }
+
+            //define o nome da imagem
+            $upload = $image->storeAs('users', $nameImage);
+
+            if (!$upload) {
+                return redirect()->route('profile')
+                    ->withErrors(['errors' => 'Erro no upload'])
+                    ->withInput();
+            }
+        }
+
+        //Atualizar os dados do usuário
+        $update = $user->update($dataUser);
+
+        if ($update) {
+
+            return redirect()->route('profile')->with(['success' => 'Alteração realizada com sucesso']);
+
+        } else {
+
+            return redirect()->route('usuarios.edit', ['id' => $id])
+                ->withErrors(['errors' => 'Falha ao editar'])
+                ->withInput();
+        }
+    }
+
 }
