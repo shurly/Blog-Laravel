@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,16 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
 
 /*********************************** Rotas Painel *****************************************
  * ****************************************************************************************
@@ -36,6 +27,9 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function (){
     Route::any('categorias/pesquisar', [App\Http\Controllers\Painel\CategoryController::class, 'search'])->name('categorias.search');
     Route::resource('categorias', App\Http\Controllers\Painel\CategoryController::class);
 
+    //Routes de Profile
+    Route::get('perfil', [App\Http\Controllers\Painel\UserController::class, 'showProfile'])->name('profile');
+
 
     Route::get('/', [App\Http\Controllers\Painel\PainelController::class, 'index']);
 
@@ -49,5 +43,14 @@ Route::get('/', [App\Http\Controllers\Site\SiteController::class, 'index']);
 
 
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
+
+Route::get('/', function () {
+    return view('site/home/index');
+});
+
+require __DIR__.'/auth.php';
 

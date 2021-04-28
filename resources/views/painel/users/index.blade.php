@@ -64,10 +64,10 @@
         </table>
 
         @if(isset ($dataForm))
-            {!! $users->appends($dataForm)->links() !!}
+            {{ $users->appends($dataForm)->links() }}
         @else
-            {!! $users->links()  !!}
-        @endif
+        {{  $users->links() }}
+   @endif
 
-    </div><!--Content Dinâmico-->
+</div><!--Content Dinâmico-->
 @endsection

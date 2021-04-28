@@ -6,7 +6,6 @@
 
     {!! Form::open(['url' => '/login', 'class' => 'form-login']) !!}
 
-    <
     {!! Form::email('email', null, ['placeholder' => 'E-mail:']) !!}
     {!! Form::password('password', ['placeholder' => 'Senha:']) !!}
 

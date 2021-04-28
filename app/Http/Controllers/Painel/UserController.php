@@ -204,4 +204,20 @@ class UserController extends Controller
 
        return view('painel.users.index', compact('users', 'dataForm'));
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showProfile()
+    {
+        $title = 'Meu Perfil';
+
+        //Recuperar o usuário
+        $user = auth()->user();
+
+        return view('painel.users.profile', compact('user', 'title'));
+    }
 }

@@ -43,8 +43,8 @@
 
             <li>
                 <a href="{{ url('painel/categorias') }}">
-                    <i class="fas fa-boxes" aria-hidden="true"></i>
-                   Categorias
+                    <i class="fa fa-cubes" aria-hidden="true"></i>
+                    Categorias
                 </a>
             </li>
         </ul>
@@ -58,13 +58,20 @@
         <div class="dropdown user-dash">
             <div class="dropdown-toggle" id="dropDownCuston" data-toggle="dropdown" aria-haspopup="true"
                  aria-expanded="true">
-                <img src="{{url('assets/painel/imgs/user-carlos-ferreira.png')}}" alt="Carlos Ferreira" class="user-dashboard img-circle">
-                <p class="user-name">Nome User</p>
+
+                @if(auth()->user()->image != '' && file_exists(public_path('assets/uploads/users' . auth()->user()->image)))
+                    <img src="{{public_path('assets/uploads/users' . auth()->user()->image)}}"
+                         alt="{{auth()->user()->name}}" class="user-dashboard img-circle">
+                @else
+                    <img src="{{ url('assets/painel/imgs/no-image.png') }}" alt="{{auth()->user()->name}}"
+                         class="user-dashboard img-circle">
+                @endif
+                <p class="user-name">{{ auth()->user()->name }}</p>
                 <span class="caret"></span>
             </div>
             <ul class="dropdown-menu dp-menu" aria-labelledby="dropDownCuston">
-                <li><a href="#">Perfil</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="{{ route('profile') }}">Perfil</a></li>
+                <li><a href="{{route('logout')}}">Logout</a></li>
             </ul>
         </div>
     </div><!--Top Dashboard-->
@@ -72,9 +79,7 @@
     <div class="content-ds">
 
 
-
-
-       @yield('content')
+        @yield('content')
 
 
     </div><!--End Content DS-->
@@ -87,8 +92,8 @@
 
 <!-- Ocultar mensagem de sucesso depois de um tempo -->
 <script>
-    $(function(){
-       setTimeout(" $('.hide-msg').fadeOut();", 3000)
+    $(function () {
+        setTimeout(" $('.hide-msg').fadeOut();", 3000)
     })
 </script>
 
