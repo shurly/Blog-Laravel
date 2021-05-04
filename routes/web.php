@@ -65,6 +65,7 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function (){
  * ****************************************************************************************
  * ***************************************************************************************/
 
+Route::any('/buscar', [App\Http\Controllers\Site\SiteController::class, 'search'])->name('search.blog');
 Route::post('/comment-post', [App\Http\Controllers\Site\SiteController::class, 'commentPost'])->name('comment');
 Route::get('/tutorial/{url}', [App\Http\Controllers\Site\SiteController::class, 'post'])->name('post');
 Route::get('/categoria/{url}', [App\Http\Controllers\Site\SiteController::class, 'category']);

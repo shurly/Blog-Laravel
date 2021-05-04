@@ -64,21 +64,35 @@ class SiteController extends Controller
 
     public function commentPost(Request $request)
     {
-        $dataForm = $request->all();
         $comment = new Comment;
-        $comment->user_id = (auth()->check() ) ? auth()->user()->id : 1;
-        $comment->post_id = $dataForm['post'];
-        $comment->name = $dataForm['name'];
-        $comment->email = $dataForm['email'];
-        $comment->description = $dataForm['description'];
-        $comment->date = date('Y-m-d');
-        $comment->hour = date('H:i:s');
-        $comment->status = 'R';
+        $dataForm = $request->all();
 
-        if($comment->save())
+        $validate = validator($dataForm,$comment->rules());
+        if( $validate->fails() ){
+            $msgErrors = '';
+
+            foreach ($validate->messages()->all("<p>:message</p>") as $message){
+                $msgErrors .= $message;
+            }
+
+            return $msgErrors;
+        }
+
+        if($comment->newComment($dataForm))
             return '1';
         else
             return 'Falha ao cadastrar comentário';
 
+    }
+
+    public function search(Request $request)
+    {
+        $dataForm = $request->except('_token');
+        $posts = $this->post
+            ->where('title', 'LIKE', "%{$dataForm['key-search']}%")
+            ->orWhere('description', 'LIKE', "%{$dataForm['key-search']}%")
+            ->orderBy('date', 'DESC')->paginate($this->totalPage);
+
+        return view('site.search.search', compact('dataForm', 'posts'));
     }
 }

@@ -33,13 +33,12 @@
         </div>
 
         <div class="form col-md-6">
-            <form class="form form-search form-inline">
-                <input type="text" name="pesquisar" placeholder="Pesquisar?" class="form-control">
-
+                {!! Form::open(['route' => 'search.blog', 'class' => 'form form-search form-inline' ]) !!}
+                {!! Form::text('key-search', null, ['placeholder' => 'Pesquisar?', 'class' => 'form-control'] ) !!}
                 <button>
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
-            </form>
+            {!! Form::close() !!}
         </div>
     </div><!--End Container-->
 </header><!--End Header TOP-->

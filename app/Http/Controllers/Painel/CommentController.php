@@ -61,22 +61,25 @@ class CommentController extends Controller
 
     public function answerComment(Request $request, $id)
     {
-        $this->validate($request, ['description' => 'required|min:3|max:1000']);
-        $dataForm = $request->all();
+        $this->validate($request, $this->comment->rulesAnswerComment());
 
         $comment = $this->comment->find($id);
-        $comment->status = 'A';
-        $comment->save();
 
+        $dataForm = $request->all();
         $dataForm['user_id'] = auth()->user()->id;
         $dataForm['date'] = date('Y-m-d');
         $dataForm['hour'] = date('H:i:s');
-        $insert = $comment->answers()->create($dataForm);
 
-        if($insert)
+        $reply = $comment->answers()->create($dataForm);
+
+        if($reply){
+            //event(new \App\Events\CommentAnswered($comment, $reply));
+
             return redirect()->back()->with(['seccess' => 'Comentário enviado com sucesso']);
-        else
+        }
+        else{
             return redirect()->back()->withErrors(['errors' => 'Falha ao responder'])->withInput();
+        }
 
     }
 

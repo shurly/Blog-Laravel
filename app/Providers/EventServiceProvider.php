@@ -8,6 +8,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\CommentAnswered;
+use App\Listeners\SendMailCommentAnswered;
+use App\Listeners\ChangeStatusCommentAnswered;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -20,6 +23,10 @@ class EventServiceProvider extends ServiceProvider
       PostViewed::class => [
           IncrementsPostViewed::class,
       ],
+        CommentAnswered::class => [
+          SendMailCommentAnswered::class,
+          ChangeStatusCommentAnswered::class,
+        ],
 
     ];
 
