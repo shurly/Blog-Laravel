@@ -54,6 +54,13 @@
                     Posts
                 </a>
             </li>
+
+            <li>
+                <a href="{{ url('painel/comentarios') }}">
+                    <i class="fa fa-comments" aria-hidden="true"></i>
+                    Comentários
+                </a>
+            </li>
         </ul>
     </div>
 

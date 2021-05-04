@@ -74,6 +74,7 @@ img.img-slide-small{}
     z-index: 2;
     padding: 10px;
     text-transform: uppercase;
+    width: 100%;
 }
 .img-big{position: relative;
     padding: 0px;
@@ -110,9 +111,9 @@ img.img-post{
     margin-bottom: 6px;
 }
 p.description-post{
-    
+
 font-size: .8em;
-    
+
 color: #737272;
 }
 .btn-post{
@@ -247,6 +248,7 @@ h1.title-category{
     margin: 12px 0px;
     padding: 10px 0px;
     background: #f3f3f3;
+    width: 100%;
 }
 img.user-comment-img{
     max-width: 80px;
