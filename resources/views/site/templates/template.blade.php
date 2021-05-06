@@ -88,7 +88,7 @@
 
 
 <footer class="footer">
-    <p class="footer">Todos os direitos reservados - EspecializaTi {{date('Y')}}></p>
+    <p class="footer">Todos os direitos reservados - Shirlei Domingos {{date('Y')}}</p>
 </footer>
 
 

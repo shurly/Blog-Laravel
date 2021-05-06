@@ -57,6 +57,27 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function (){
     Route::get('comentarios/{id}/respostas/{idAnswer}/delete', [App\Http\Controllers\Painel\CommentController::class, 'destroyAnswer'])->name('destroy-answer');
 
 
+    //Routes Profiles
+    Route::any('perfis/{id}/usuarios/search', [App\Http\Controllers\Painel\ProfileController::class, 'searchUser'])->name('profile.users.search');
+    Route::any('perfis/pesquisar', [App\Http\Controllers\Painel\ProfileController::class, 'search'])->name('perfis.search');
+    Route::get('perfis/{id}/usuarios', [App\Http\Controllers\Painel\ProfileController::class, 'users'])->name('profile.users');
+    Route::resource('perfis', App\Http\Controllers\Painel\ProfileController::class);
+    Route::get('perfis/{id}/usuarios/cadastrar', [App\Http\Controllers\Painel\ProfileController::class, 'usersAdd'])->name('profile.users.add');
+    Route::post('perfis/{id}/usuarios/cadastrar', [App\Http\Controllers\Painel\ProfileController::class, 'usersAddProfile'])->name('profile.users.add');
+    Route::get('perfis/{id}/usuarios/{userId}/delete', [App\Http\Controllers\Painel\ProfileController::class, 'deleteUser'])->name('profile.user.delete');
+
+
+    //Routes Permissions
+    Route::any('permissoes/{id}/perfis/search', [App\Http\Controllers\Painel\PermissionController::class, 'searchProfiles'])->name('profile.permissions.search');
+    Route::any('permissoes/pesquisar', [App\Http\Controllers\Painel\PermissionController::class, 'search'])->name('permissions.search');
+    Route::resource('permissoes', App\Http\Controllers\Painel\PermissionController::class);
+    Route::get('permissoes/{id}/perfis', [App\Http\Controllers\Painel\PermissionController::class, 'profiles'])->name('permissoes.perfis');
+    Route::get('permissoes/{id}/perfis/cadastrar', [App\Http\Controllers\Painel\PermissionController::class, 'permissionAdd'])->name('permissions.profile.add');
+    Route::post('permissoes/{id}/perfis/cadastrar', [App\Http\Controllers\Painel\PermissionController::class, 'permissionAddProfile'])->name('permissions.profile.add');
+    Route::get('permissoes/{id}/perfis/{profileId}/delete', [App\Http\Controllers\Painel\PermissionController::class, 'deletePermission'])->name('permissions.profile.delete');
+
+
+
     Route::get('/', [App\Http\Controllers\Painel\PainelController::class, 'index']);
 
 });

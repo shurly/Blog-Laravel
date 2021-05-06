@@ -61,6 +61,20 @@
                     Comentários
                 </a>
             </li>
+
+            <li>
+                <a href="{{ url('painel/perfis') }}">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Perfis
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url('painel/permissoes') }}">
+                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                    Permissões
+                </a>
+            </li>
         </ul>
     </div>
 
