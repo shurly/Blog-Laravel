@@ -17,6 +17,9 @@ class UserController extends Controller
     {
         $this->user = $user;
 
+        $this->middleware('can:users');
+
+
     }
 
     /**
@@ -231,6 +234,8 @@ class UserController extends Controller
 
     public function updateProfile(UserFormRequest $request, $id)
     {
+
+        $this->authorize('update_profile', $id);
 
         //Pegar todos os dados de usuários e armazenar na variavel $dataform
         $dataUser = $request->all();

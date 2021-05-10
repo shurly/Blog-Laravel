@@ -7,14 +7,14 @@
     </div>
 
     <div class="title-pg">
-        <h1 class="title-pg">Listagem dos Perfis</h1>
+        <h1 class="title-pg">Usuários do Perfil: <b>{{$profile->name}}</b></h1>
     </div>
 
     <div class="content-din bg-white">
 
         <div class="form-search">
 
-            {!! Form::open(['route' => 'perfis.search', 'class' => 'form form-inline']) !!}
+            {!! Form::open(['route' => ['profile.permissions.search', $profile->id], 'class' => 'form form-inline']) !!}
                 {!! Form::text('key-search', null, ['class' => 'form-control', 'placeholder' => 'Nome:']) !!}
 
                 {!! Form::submit('Filtrar', ['class' => 'btn']) !!}
@@ -22,7 +22,7 @@
         </div>
 
         <div class="class-btn-insert">
-            <a href="{{url('/painel/perfis/create')}}" class="btn-insert">
+            <a href="{{route('profiles.permissions.list', $profile->id)}}" class="btn-insert">
                 <span class="glyphicon glyphicon-plus"></span>
                 Cadastrar
             </a>
@@ -38,18 +38,15 @@
             <tr>
                 <th>Nome</th>
                 <th>Label</th>
-                <th width="400">Ações</th>
+                <th width="150">Ações</th>
             </tr>
 
-            @forelse($data as $profile)
+            @forelse($permissions as $permission)
                 <tr>
-                    <td>{{$profile->name}}</td>
-                    <td>{{$profile->label}}</td>
+                    <td>{{$permission->name}}</td>
+                    <td>{{$permission->label}}</td>
                     <td>
-                        <a href="{{route('perfis.edit', $profile->id)}}" class="edit "><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>Editar</a>
-                        <a href="{{ route('perfis.show', $profile->id) }}" class="delete"><i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>Visualizar</a>
-                        <a href="{{ route('profile.users', $profile->id) }}" class="edit"><i class="fa fa-id-card"></i> Usuários</a>
-                        <a href="{{ route('profiles.permissions', $profile->id) }}" class="delete"><i class="fa fa-unlock-alt"></i> Permissões</a>
+                        <a href="{{ route('profiles.permissions.delete', [$profile->id, $permission->id]) }}" class="delete"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i>Excluir</a>
                     </td>
                 </tr>
             @empty
@@ -57,11 +54,6 @@
             @endforelse
         </table>
 
-        @if(isset ($dataForm))
-            {!! $data->appends($dataForm)->links() !!}
-        @else
-            {!! $data->links()  !!}
-        @endif
 
     </div><!--Content Dinâmico-->
 @endsection

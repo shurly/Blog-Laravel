@@ -9,7 +9,7 @@ use App\Models\Permission;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\User;
-use Illuminate\Http\Request;
+
 
 class PainelController extends Controller
 {

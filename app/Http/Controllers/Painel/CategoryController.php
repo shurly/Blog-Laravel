@@ -17,6 +17,9 @@ class CategoryController extends StandardController
     public function __construct(Category $category)
     {
         $this->model = $category;
+
+        $this->middleware('can:categories');
+
     }
 
 }

@@ -34,47 +34,59 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{{ url('painel/usuarios') }}">
-                    <i class="fa fa-id-card" aria-hidden="true"></i>
-                    Usuários
-                </a>
-            </li>
+            @can('users')
+                <li>
+                    <a href="{{ url('painel/usuarios') }}">
+                        <i class="fa fa-id-card" aria-hidden="true"></i>
+                        Usuários
+                    </a>
+                </li>
+            @endcan
 
-            <li>
-                <a href="{{ url('painel/categorias') }}">
-                    <i class="fa fa-cubes" aria-hidden="true"></i>
-                    Categorias
-                </a>
-            </li>
+            @can('categories')
+                <li>
+                    <a href="{{ url('painel/categorias') }}">
+                        <i class="fa fa-cubes" aria-hidden="true"></i>
+                        Categorias
+                    </a>
+                </li>
+            @endcan
 
-            <li>
-                <a href="{{ url('painel/posts') }}">
-                    <i class="fa fa-file-text" aria-hidden="true"></i>
-                    Posts
-                </a>
-            </li>
+            @can('post')
+                <li>
+                    <a href="{{ url('painel/posts') }}">
+                        <i class="fa fa-file-text" aria-hidden="true"></i>
+                        Posts
+                    </a>
+                </li>
+            @endcan
 
-            <li>
-                <a href="{{ url('painel/comentarios') }}">
-                    <i class="fa fa-comments" aria-hidden="true"></i>
-                    Comentários
-                </a>
-            </li>
+            @can('comments')
+                <li>
+                    <a href="{{ url('painel/comentarios') }}">
+                        <i class="fa fa-comments" aria-hidden="true"></i>
+                        Comentários
+                    </a>
+                </li>
+            @endcan
 
-            <li>
-                <a href="{{ url('painel/perfis') }}">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    Perfis
-                </a>
-            </li>
+            @can('profiles')
+                <li>
+                    <a href="{{ url('painel/perfis') }}">
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        Perfis
+                    </a>
+                </li>
+            @endcan
 
-            <li>
-                <a href="{{ url('painel/permissoes') }}">
-                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                    Permissões
-                </a>
-            </li>
+            @can('permissions')
+                <li>
+                    <a href="{{ url('painel/permissoes') }}">
+                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                        Permissões
+                    </a>
+                </li>
+            @endcan
         </ul>
     </div>
 

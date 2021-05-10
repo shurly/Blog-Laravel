@@ -18,6 +18,9 @@ class ProfileController extends StandardController
     public function __construct(Profile $profile)
     {
         $this->model = $profile;
+
+        $this->middleware('can:profiles');
+
     }
 
     public function users($id)
@@ -75,6 +78,87 @@ class ProfileController extends StandardController
             ->paginate($this->totalPage);
 
         return view('painel.profiles.users', compact('users', 'dataForm', 'profile'));
+    }
+
+    //permissions
+    public function permissions($id)
+    {
+        $profile = $this->model->find($id);
+
+        $permissions = $profile->permissions()
+            ->distinct()
+            ->paginate($this->totalPage);
+
+        $title = 'Permissões com o perfil: ' . $profile->name;
+
+        return view('painel.profiles.permissions', compact('profile', 'permissions', 'title'));
+    }
+
+
+    public function listPermissionAdd($id)
+    {
+        $profile = $this->model->find($id);
+
+        $permissions = Permission::WhereNotIn('id', function ($query) use ($profile) {
+            $query->select('permission_profile.permission_id');
+            $query->from('permission_profile');
+            $query->whereRaw("permission_profile.profile_id = {$profile->id}");
+        })->get();
+
+        $title = 'Vincular permissão ao perfil: ' . $profile->name;
+
+        return view('painel.profiles.permissions-add', compact('profile', 'permissions', 'title'));
+    }
+
+    public function permissionAddProfile(Request $request, $id)
+    {
+        $dataForm = $request->get('permissions');
+
+        $profile = $this->model->find($id);
+
+        $profile->permissions()->attach($dataForm);
+
+        return redirect()->route('profiles.permissions', $profile->id)
+            ->with('success', 'Permissão adicionada com sucesso!');;
+    }
+
+    public function permissionDeleteProfile($id, $permissionId)
+    {
+        $profile = $this->model->find($id);
+
+        $profile->permissions()->detach($permissionId);
+
+        return redirect()->route('profiles.permissions', $profile->id)
+            ->with('success', 'Permissão removida com sucesso!');
+    }
+
+    public function searchPermissions(Request $request, $id)
+    {
+        $dataForm = $request->except('_token');
+
+        $profile = $this->model->find($id);
+
+        $permissions = $profile->permissions()
+            ->where(function ($query) use ($dataForm) {
+                $query->where('permissions.name', 'LIKE', "%{$dataForm['key-search']}%")
+                    ->orWhere('permissions.label', 'LIKE', "%{$dataForm['key-search']}%");
+            })->paginate($this->totalPage);
+
+        $title = 'Permissões com o perfil: ' . $profile->name;
+
+        return view('painel.profiles.permissions', compact('profile', 'permissions', 'title', 'dataForm'));
+    }
+
+
+    public function search(Request $request)
+    {
+        $dataForm = $request->except('_token');
+
+        $data = $this->model->where('name', 'like', "%{$dataForm['key-search']}%")
+            ->orWhere('label', 'like', "%{$dataForm['key-search']}%")
+            ->paginate($this->totalPage);
+
+        return view("{$this->view}.index", compact('data', 'dataForm'));
     }
 
 }

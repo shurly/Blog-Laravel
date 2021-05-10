@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Painel;
 
-use App\Http\Controllers\Controller;
+
 use App\Http\Controllers\StandardController;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
@@ -19,6 +20,9 @@ class PostController extends StandardController
     public function __construct(Post $post)
     {
         $this->model = $post;
+
+        $this->middleware('can:post');
+        $this->middleware('can:update_post')->only(['edit', 'update']);
     }
 
 
@@ -29,6 +33,9 @@ class PostController extends StandardController
      */
     public function create()
     {
+        if(Gate::denies('create_post'))
+            abort(403, 'Você não pode cadastrar novo post');
+
         $title = "Cadastrar Novo {$this->name}s ";
 
         $categories = Category::get()->pluck('name', 'id');
@@ -85,6 +92,7 @@ class PostController extends StandardController
         }
     }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -94,6 +102,7 @@ class PostController extends StandardController
     public function edit($id)
     {
         $data = $this->model->find($id);
+
         $title = "Alterar {$this->name}:  $data->title";
 
         $categories = Category::get()->pluck('name', 'id');
@@ -120,6 +129,7 @@ class PostController extends StandardController
         $data = $this->model->find($id);
 
         $dataForm['featured'] = isset($dataForm['featured']) ? true : false;
+
 
         //Verifica se existe arquivo
         if ($this->upload && $request->hasFile($this->upload['name'])) {
@@ -177,5 +187,27 @@ class PostController extends StandardController
         return view("{$this->view}.index", compact('data', 'dataForm'));
 
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $data = $this->model->find($id);
+
+        $this->authorize('owner', $data);
+
+        /*if(Gate::denies('view-post', $data))
+            return redirect()->back();
+        //abort(403, 'Você não tem permissão para visualizar o post');*/
+
+        $title = "{$this->name}: $data->name";
+
+        return view("{$this->view}.show", compact('title', 'data'));
+    }
+
 
 }

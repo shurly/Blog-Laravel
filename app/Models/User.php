@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Profile;
+use App\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -50,5 +50,20 @@ class User extends Authenticatable
     public function profiles()
     {
         return $this->belongsToMany(Profile::class);
+    }
+
+    public function hasPermission(Permission $permission)
+    {
+        return $this->hasProfile($permission->profiles);
+    }
+
+    public function hasProfile($profile)
+    {
+        if (is_string($profile)) {
+            return $this->profiles->contains('name', $profile);
+        }
+
+        return !!$profile->intersect($this->profiles)->count();
+
     }
 }

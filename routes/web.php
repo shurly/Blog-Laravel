@@ -67,6 +67,12 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function (){
     Route::get('perfis/{id}/usuarios/{userId}/delete', [App\Http\Controllers\Painel\ProfileController::class, 'deleteUser'])->name('profile.user.delete');
 
 
+    Route::get('profiles/{id}/permissao' , [App\Http\Controllers\Painel\ProfileController::class, 'permissions'])->name('profiles.permissions');
+    Route::get('profiles/{id}/permissao/cadastrar', [App\Http\Controllers\Painel\ProfileController::class, 'listPermissionAdd'])->name('profiles.permissions.list');
+    Route::post('profiles/{id}/permissao/cadastrar', [App\Http\Controllers\Painel\ProfileController::class, 'permissionAddProfile'])->name('profiles.permissions.add');
+    Route::get('profiles/{id}/permissao/{permissionId}/delete', [App\Http\Controllers\Painel\ProfileController::class, 'permissionDeleteProfile'])->name('profiles.permissions.delete');
+
+
     //Routes Permissions
     Route::any('permissoes/{id}/perfis/search', [App\Http\Controllers\Painel\PermissionController::class, 'searchProfiles'])->name('profile.permissions.search');
     Route::any('permissoes/pesquisar', [App\Http\Controllers\Painel\PermissionController::class, 'search'])->name('permissions.search');
@@ -75,7 +81,6 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function (){
     Route::get('permissoes/{id}/perfis/cadastrar', [App\Http\Controllers\Painel\PermissionController::class, 'permissionAdd'])->name('permissions.profile.add');
     Route::post('permissoes/{id}/perfis/cadastrar', [App\Http\Controllers\Painel\PermissionController::class, 'permissionAddProfile'])->name('permissions.profile.add');
     Route::get('permissoes/{id}/perfis/{profileId}/delete', [App\Http\Controllers\Painel\PermissionController::class, 'deletePermission'])->name('permissions.profile.delete');
-
 
 
     Route::get('/', [App\Http\Controllers\Painel\PainelController::class, 'index']);
